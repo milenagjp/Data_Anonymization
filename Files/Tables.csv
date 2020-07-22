@@ -1,0 +1,11 @@
+Table_Name,Column_Name,"Data_Type {nullable, unique}","Anonymization_Type {None, Omit, Randomize, Default value, Encode}"
+HR.Employee,NationalIDNumber,unique,RandomPseudonym
+HR.EmployeePayHistory,Rate,not null,Omit
+Sales.SalesOrderHeader,CreditCardApprovalCode,nullable,Null
+Sales.CreditCard,CardNumber,unique,Random
+Person.Person,"AdditionalContactInfo",nullable,None
+Person.Password,PasswordHash,not null,RandomFromSet
+Purchasing.Vendor,AccountNumber,unique,Default
+Purchasing.PurchaseOrderHeader,TotalDue,not null,Random 
+Production.Product,"ProductNumber",unique,RandomPseudonym
+Production.TransactionHistory,TransactionID,not null,RandomFromSet

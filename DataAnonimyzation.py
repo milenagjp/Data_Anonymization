@@ -7,34 +7,37 @@ def none_function(table_data, column_data, column_name):
 
 
 def omit(table_data, column_data, column_name):
-    return pd.DataFrame(table_data)
+    table_data.drop(columns=[column_name], axis=1, inplace=True)
+    return table_data
 
 
 def null_function(table_data, column_data, column_name):
-    return pd.DataFrame(table_data)
+    table_data.drop(columns=[column_name], axis=1, inplace=True)
+    table_data[column_name] = [0] * len(column_data)
+    return table_data
 
 
-def default(df, column, column_name):
+def default(table_data, column, column_name):
     dictionary = {value: i for i, value in enumerate(column.unique())}
-    df[column_name].replace(dictionary, inplace=True)
-    return df
+    table_data[column_name].replace(dictionary, inplace=True)
+    return table_data
 
 
-def random(df, column, column_name):
+def random(table_data, column, column_name):
     list_of_random_unique = rd.sample(range(1, len(column) * 10), len(column))
-    df.drop(column_name, axis=1, inplace=True)
-    df[column_name] = list_of_random_unique
-    return df
+    table_data.drop(column_name, axis=1, inplace=True)
+    table_data[column_name] = list_of_random_unique
+    return table_data
 
 
-def random_pseudonym(df, column, column_name):
+def random_pseudonym(table_data, column, column_name):
     dictionary = {}
     for value in column:
         sample = rd.sample(range(1, len(column) * 10), len(column))
         if value not in dictionary.values():
             dictionary[value] = sample
-    df[column_name].replace(dictionary, inplace=True)
-    return df
+    table_data[column_name].replace(dictionary, inplace=True)
+    return table_data
 
 
 def random_from_set(table_data, column_data, column_name):
@@ -42,7 +45,6 @@ def random_from_set(table_data, column_data, column_name):
 
 
 def switch_function(function_name, column_data, column_name, table_data):
-
     if 'None-function' == function_name:
         return none_function(table_data, column_data, column_name)
 

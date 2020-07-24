@@ -1,9 +1,9 @@
 Table_Name,Column_Name,Data_Type {nullable, unique},Anonymization_Type {None, Omit, Randomize, Default value, Encode},Table_Column_Name
 HumanResources.Employee,NationalIDNumber,unique,RandomPseudonym,"BusinessEntityID,NationalIDNumber,LoginID,OrganizationNode,OrganizationLevel,JobTitle,BirthDate,MaritalStatus,Gender,HireDate,SalariedFlag,VacationHours,SickLeaveHours,CurrentFlag,rowguid,ModifiedDate"
 HumanResources.EmployeePayHistory,Rate,not null,Omit,"BusinessEntityID,RateChangeDate,Rate,PayFrequency,ModifiedDate"
-Sales.SalesOrderHeader,CreditCardApprovalCode,nullable,Null, "SalesOrderID,RevisionNumber,OrderDate,DueDate,ShipDate,Status,OnlineOrderFlag,SalesOrderNumber,PurchaseOrderNumber,AccountNumber,CustomerID,SalesPersonID,TerritoryID,BillToAddressID,ShipToAddressID,ShipMethodID,CreditCardID,CreditCardApprovalCode,CurrencyRateID,SubTotal,TaxAmt,Freight,TotalDue,Comment,rowguid,ModifiedDate"
+Sales.SalesOrderHeader,CreditCardApprovalCode,nullable,Null-function, "SalesOrderID,RevisionNumber,OrderDate,DueDate,ShipDate,Status,OnlineOrderFlag,SalesOrderNumber,PurchaseOrderNumber,AccountNumber,CustomerID,SalesPersonID,TerritoryID,BillToAddressID,ShipToAddressID,ShipMethodID,CreditCardID,CreditCardApprovalCode,CurrencyRateID,SubTotal,TaxAmt,Freight,TotalDue,Comment,rowguid,ModifiedDate"
 Sales.CreditCard,CardNumber,unique,Random,  "CreditCardID,CardType,CardNumber,ExpMonth,ExpYear,ModifiedDate"
-Person.Person,AdditionalContactInfo,nullable,None, "BusinessEntityID,PersonType,NameStyle,Title,FirstName,MiddleName,LastName,Suffix,EmailPromotion,AdditionalContactInfo,Demographics,rowguid,ModifiedDate"
+Person.Person,AdditionalContactInfo,nullable,None-function, "BusinessEntityID,PersonType,NameStyle,Title,FirstName,MiddleName,LastName,Suffix,EmailPromotion,AdditionalContactInfo,Demographics,rowguid,ModifiedDate"
 Person.Password,PasswordHash,not null,RandomFromSet, "BusinessEntityID,PasswordHash,PasswordSalt,rowguid,ModifiedDate"
 Purchasing.Vendor,AccountNumber,unique,Default, "BusinessEntityID,AccountNumber,Name,CreditRating,PreferredVendorStatus,ActiveFlag,PurchasingWebServiceURL,ModifiedDate"
 Purchasing.PurchaseOrderHeader,TotalDue,not null,Random, "PurchaseOrderID,RevisionNumber,Status,EmployeeID,VendorID,ShipMethodID,OrderDate,ShipDate,SubTotal,TaxAmt,Freight,TotalDue,ModifiedDate"

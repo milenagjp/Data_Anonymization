@@ -11,7 +11,6 @@ def omit(table_data, column_data, column_name):
 
 
 def null_function(table_data, column_data, column_name):
-    print('null function')
     return pd.DataFrame(table_data)
 
 
@@ -43,16 +42,29 @@ def random_from_set(table_data, column_data, column_name):
 
 
 def switch_function(function_name, column_data, column_name, table_data):
-    switcher = {
-        'None': none_function(table_data, column_data, column_name),
-        'Omit': omit(table_data, column_data, column_name),
-        'Null': null_function(table_data, column_data, column_name),
-        'Default': default(table_data, column_data, column_name),
-        'Random': random(table_data, column_data, column_name),
-        'RandomFromSet': random_from_set(table_data, column_data, column_name),
-        'RandomPseudonym': random_pseudonym(table_data, column_data, column_name)
-    }
-    return switcher.get(function_name, "Invalid function name")
+
+    if 'None-function' == function_name:
+        return none_function(table_data, column_data, column_name)
+
+    if 'Omit' == function_name:
+        return omit(table_data, column_data, column_name)
+
+    if 'Null-function' == function_name:
+        return null_function(table_data, column_data, column_name)
+
+    if 'Default' == function_name:
+        return default(table_data, column_data, column_name)
+
+    if 'Random' == function_name:
+        return random(table_data, column_data, column_name)
+
+    if 'RandomFromSet' == function_name:
+        return random_from_set(table_data, column_data, column_name)
+
+    if 'RandomPseudonym' == function_name:
+        return random_pseudonym(table_data, column_data, column_name)
+
+    return 'Invalid function name'
 
 
 if __name__ == "__main__":
@@ -81,7 +93,7 @@ if __name__ == "__main__":
 
         # call functions for anonymization
         anonymized = switch_function(anonymization_type, protectedList, protected_column_name, table_reader)
-        
+
         # new table path
         new_table_path = table_path[:-4] + '-anonymized.csv'
 

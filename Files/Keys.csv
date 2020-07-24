@@ -1,6 +1,3 @@
-Ref1_Table_Name,Ref1_Colum_Name,Ref2_Table_Name,Ref2_Colum_Name
-HR.EmployeePayHistory ,BusinessEntityID,HR.Employee ,BusinessEntityID
-Sales.SalesOrderHeader ,CreditCardID,Sales.CreditCard ,CreditCardID
-Person.Password ,BusinessEntityID,Person.Person,BusinessEntityID
-Purchasing.PurchaseOrderHeader , VendorId,Purchasing.Vendor , VendorId
+Ref2_Table_Name,Ref1_Colum_Name,Ref2_Table_Name,Ref2_Colum_Name
+Purchasing.PurchaseOrderHeader ,EmployeeID,EmployeeID, VendorIdEmployeeID
 Production.TransactionHistory ,ProductId, Production.Product ,ProductId

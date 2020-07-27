@@ -51,9 +51,10 @@ def random_from_set(table_data, column_data, column_name, referenced_column_data
 
 def random_pseudonym_from_set(table_data, column_data, column_name, referenced_column_data):
     new_values = []
+    referenced_column_data = referenced_column_data.to_list()
     for value in column_data:
         num = rd.choice(referenced_column_data)
-        referenced_column_data = referenced_column_data[referenced_column_data != num]
+        referenced_column_data.remove(num)
         new_values.append(num)
 
     table_data[column_name] = new_values
@@ -96,7 +97,7 @@ def get_column_data(_column_name):
     referenced_column_name = ''
     table_name = ''
 
-    for i in range(0, (len(keys_reader) -1)):
+    for i in range(0, len(keys_reader)):
         if keys_reader['Ref1_Column_Name'][i] == _column_name:
             referenced_column_name = keys_reader['Ref2_Column_Name'][i]
             table_name = keys_reader['Ref2_Table_Name'][i]
@@ -108,7 +109,7 @@ def get_column_data(_column_name):
     main_table_reader = pd.read_csv(main_table_path, encoding="windows-1252", names=main_table_column_names, skiprows=1, na_values="?", sep=",",
                          skipinitialspace=True)
 
-    for i in range(0, (len(main_table_reader) - 1)):
+    for i in range(0, len(main_table_reader)):
         if main_table_reader['Table_Name'][i] == table_name:
             referenced_column_names = main_table_reader['Table_Column_Name'][i].split(',')
             break
@@ -118,7 +119,6 @@ def get_column_data(_column_name):
                                    na_values="?", sep=",", skipinitialspace=True)
 
     column_data = referenced_table[referenced_column_name]
-    print('return values column')
     return column_data
 
 
@@ -130,7 +130,7 @@ if __name__ == "__main__":
                          skipinitialspace=True)
 
     # go though all tables and do stuff
-    for i in range(6, (len(reader) - 1)):
+    for i in range(0, len(reader)):
         table_path = './Files/' + reader['Table_Name'][i] + '.csv'
         string_list = reader['Table_Column_Name'][i]
         table_column_names = string_list[0:-1].split(',')

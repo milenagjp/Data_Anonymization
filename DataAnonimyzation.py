@@ -40,11 +40,18 @@ def random_pseudonym(table_data, column, column_name):
     return table_data
 
 
-def random_from_set(table_data, column_data, column_name):
-    return pd.DataFrame(table_data)
+def random_from_set(table_data, column_data, column_name, referenced_column_data):
+    print('here 1')
+    return pd.DataFrame()
 
 
-def switch_function(function_name, column_data, column_name, table_data):
+def random_pseudonym_from_set(table_data, column_data, column_name, referenced_column_data):
+    print('here 2')
+    return pd.DataFrame()
+
+
+def switch_function(function_name, column_data, column_name, table_data, referenced_column = None):
+    print('switch')
     if 'None-function' == function_name:
         return none_function(table_data, column_data, column_name)
 
@@ -61,12 +68,49 @@ def switch_function(function_name, column_data, column_name, table_data):
         return random(table_data, column_data, column_name)
 
     if 'RandomFromSet' == function_name:
-        return random_from_set(table_data, column_data, column_name)
+        return random_from_set(table_data, column_data, column_name, referenced_column)
 
     if 'RandomPseudonym' == function_name:
         return random_pseudonym(table_data, column_data, column_name)
 
+    if 'RandomPseudonymFromSet' == function_name:
+        return random_pseudonym_from_set(table_data, column_data, column_name, referenced_column)
+
     return 'Invalid function name'
+
+
+def get_column_data(_column_name):
+    keys_path = './Files/keys.csv'
+    keys_column_names = ['Ref1_Table_Name','Ref1_Column_Name','Ref2_Table_Name','Ref2_Column_Name']
+    keys_reader = pd.read_csv(keys_path, names=keys_column_names, encoding="windows-1252", skiprows=1,
+                              na_values="?", sep=",", skipinitialspace=True)
+    referenced_column_name = ''
+    table_name = ''
+
+    for i in range(0, (len(keys_reader) -1)):
+        if keys_reader['Ref1_Column_Name'][i] == _column_name:
+            referenced_column_name = keys_reader['Ref2_Column_Name'][i]
+            table_name = keys_reader['Ref2_Table_Name'][i]
+
+    referenced_column_names = []
+    main_table_path = './Files/Tables.csv'
+    main_table_column_names = ["Table_Name", "Column_Name", "Data_Type {nullable, unique}",
+                    "Anonymization_Type {None, Omit, Randomize, Default value, Encode}", 'Table_Column_Name']
+    main_table_reader = pd.read_csv(main_table_path, encoding="windows-1252", names=main_table_column_names, skiprows=1, na_values="?", sep=",",
+                         skipinitialspace=True)
+
+    for i in range(0, (len(main_table_reader) - 1)):
+        if main_table_reader['Table_Name'][i] == table_name:
+            referenced_column_names = main_table_reader['Table_Column_Name'][i].split(',')
+            break
+
+    referenced_path = './Files/' + table_name + '.csv'
+    referenced_table = pd.read_csv(referenced_path, names=referenced_column_names, encoding="windows-1252", skiprows=1,
+                                   na_values="?", sep=",", skipinitialspace=True)
+
+    column_data = referenced_table[referenced_column_name]
+    print('return values column')
+    return column_data
 
 
 if __name__ == "__main__":
@@ -77,7 +121,7 @@ if __name__ == "__main__":
                          skipinitialspace=True)
 
     # go though all tables and do stuff
-    for i in range(0, (len(reader) - 1)):
+    for i in range(6, (len(reader) - 1)):
         table_path = './Files/' + reader['Table_Name'][i] + '.csv'
         string_list = reader['Table_Column_Name'][i]
         table_column_names = string_list[0:-1].split(',')
@@ -94,7 +138,13 @@ if __name__ == "__main__":
         anonymization_type = reader['Anonymization_Type {None, Omit, Randomize, Default value, Encode}'][i]
 
         # call functions for anonymization
-        anonymized = switch_function(anonymization_type, protectedList, protected_column_name, table_reader)
+        if anonymization_type.endswith('FromSet'):
+            print('IF')
+            referenced_column = get_column_data(protected_column_name)
+            anonymized = switch_function(anonymization_type, protectedList, protected_column_name, table_reader, referenced_column)
+        else :
+            print('ELSE')
+            anonymized = switch_function(anonymization_type, protectedList, protected_column_name, table_reader)
 
         # new table path
         new_table_path = table_path[:-4] + '-anonymized.csv'

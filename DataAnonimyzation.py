@@ -41,17 +41,26 @@ def random_pseudonym(table_data, column, column_name):
 
 
 def random_from_set(table_data, column_data, column_name, referenced_column_data):
-    print('here 1')
-    return pd.DataFrame()
+    new_values = []
+    for value in column_data:
+        new_values.append(rd.choice(referenced_column_data))
+
+    table_data[column_name] = new_values
+    return table_data
 
 
 def random_pseudonym_from_set(table_data, column_data, column_name, referenced_column_data):
-    print('here 2')
-    return pd.DataFrame()
+    new_values = []
+    for value in column_data:
+        num = rd.choice(referenced_column_data)
+        referenced_column_data = referenced_column_data[referenced_column_data != num]
+        new_values.append(num)
+
+    table_data[column_name] = new_values
+    return table_data
 
 
 def switch_function(function_name, column_data, column_name, table_data, referenced_column = None):
-    print('switch')
     if 'None-function' == function_name:
         return none_function(table_data, column_data, column_name)
 

@@ -133,7 +133,7 @@ if __name__ == "__main__":
     for i in range(0, len(reader)):
         table_path = './Files/' + reader['Table_Name'][i] + '.csv'
         string_list = reader['Table_Column_Name'][i]
-        table_column_names = string_list[0:-1].split(',')
+        table_column_names = string_list.split(',')
 
         # reading table data
 

@@ -131,7 +131,8 @@ if __name__ == "__main__":
 
     # go though all tables and do stuff
     for i in range(0, len(reader)):
-        table_path = './Files/' + reader['Table_Name'][i] + '.csv'
+        table_name = reader['Table_Name'][i]
+        table_path = './Files/' + table_name + '.csv'
         string_list = reader['Table_Column_Name'][i]
         table_column_names = string_list.split(',')
 
@@ -148,12 +149,12 @@ if __name__ == "__main__":
 
         # call functions for anonymization
         if anonymization_type.endswith('FromSet'):
-            print('IF')
             referenced_column = get_column_data(protected_column_name)
             anonymized = switch_function(anonymization_type, protectedList, protected_column_name, table_reader, referenced_column)
         else :
-            print('ELSE')
             anonymized = switch_function(anonymization_type, protectedList, protected_column_name, table_reader)
+
+        print('Anonimization type: ' + anonymization_type + '. Table ' + table_name + ' - DONE')
 
         # new table path
         new_table_path = table_path[:-4] + '-anonymized.csv'
